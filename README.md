@@ -1,2 +1,3 @@
-# meugeradordeofertas
-OFERTOU.IA
+# OFERTOU.IA
+
+Criando um gerador de ofertas automatico com IA
