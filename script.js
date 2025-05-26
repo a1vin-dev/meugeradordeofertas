@@ -43,7 +43,6 @@ function gerarOferta() {
     document.getElementById('copiarBtn').style.display = 'block';
 }
 
-// Extrai benefícios diretamente do título (sem IA)
 function extrairBeneficiosDoTitulo(titulo) {
     // Palavras-chave prioritárias
     const palavrasChave = [
@@ -53,25 +52,25 @@ function extrairBeneficiosDoTitulo(titulo) {
     ];
     
     // Processamento do título
-    const palavrasUnicas = [...new Set( // Remove duplicatas
+    const palavrasUnicas = [...new Set(
         titulo.toLowerCase()
-            .replace(/[^a-zà-ú\s]/g, '') // Remove caracteres especiais
+            .replace(/[^a-zà-ú\s]/g, '')
             .split(' ')
-            .filter(palavra => palavra.length > 3) // Filtra palavras curtas
+            .filter(palavra => palavra.length > 3)
     )];
     
     // Identifica palavras-chave prioritárias
     const beneficios = [];
-    palavrasChave.forEach(palavra => {
-        if (titulo.toLowerCase().includes(palavra) {
+    palavrasChave.forEach(function(palavra) {
+        if (titulo.toLowerCase().includes(palavra)) {
             beneficios.push(
                 palavra.charAt(0).toUpperCase() + palavra.slice(1)
             );
         }
     });
     
-    // Adiciona outras palavras relevantes (se necessário)
-    palavrasUnicas.forEach(palavra => {
+    // Adiciona outras palavras relevantes
+    palavrasUnicas.forEach(function(palavra) {
         if (beneficios.length < 3 && !palavrasChave.includes(palavra)) {
             beneficios.push(
                 palavra.charAt(0).toUpperCase() + palavra.slice(1)
@@ -79,12 +78,11 @@ function extrairBeneficiosDoTitulo(titulo) {
         }
     });
     
-    // Completa com padrões se não atingir 3 benefícios
+    // Completa com padrões se necessário
     const padroes = ["Design Premium", "Alta Durabilidade", "Garantia Estendida"];
     return beneficios.concat(padroes).slice(0, 3);
 }
 
-// Funções auxiliares
 function extrairProduto(texto) {
     const match = texto.match(/>([^<]+)</) || texto.match(/🚨[^>]+>([^\n]+)/);
     return match ? match[1].replace(/[🚨‼️👉🏷️]/g, '').trim() : "PRODUTO";
@@ -97,17 +95,17 @@ function extrairDado(texto, regex, grupo = 1) {
 
 function criarNomePromo(nome) {
     const palavras = nome.replace(/[^a-zA-ZÀ-ú\s]/g, '').split(' ');
-    const palavraChave = palavras.find(p => p.length > 3) || palavras[0];
+    const palavraChave = palavras.find(function(p) { return p.length > 3; }) || palavras[0];
     return palavraChave.substring(0, 5).toUpperCase() + "DOO";
 }
 
 function copiarTexto() {
     const texto = document.getElementById('resultado').innerText;
     navigator.clipboard.writeText(texto)
-        .then(() => {
+        .then(function() {
             const btn = document.getElementById('copiarBtn');
             btn.textContent = '✅ COPIADO!';
-            setTimeout(() => {
+            setTimeout(function() {
                 btn.textContent = '📋 COPIAR OFERTA';
             }, 2000);
         });
