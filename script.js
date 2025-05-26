@@ -46,25 +46,38 @@ async function gerarOfertaIA() {
 }
 
 // Função principal de IA
-async function extrairBeneficiosComIA(titulo) {
-    const prompt = `Extraia 3 características-chave deste produto para anúncio, sem repetições. Formato: "1. xxx|2. xxx|3. xxx"\n\nProduto: "${titulo}"\nCaracterísticas:`;
+async function extrairBeneficiosDoTitulo(titulo) {
+    // Lista de palavras-chave para priorizar
+    const palavrasChave = [
+        'impermeável', 'antiderrapante', 'confortável', 'luxo', 
+        'profissional', 'elétrico', 'sem fio', 'automático', 
+        'ergonômico', 'resistente', 'leve', 'compacto'
+    ];
     
-    const response = await fetch(COHERE_API_URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${COHERE_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            prompt,
-            max_tokens: 50,
-            temperature: 0.7,
-            stop_sequences: ['\n']
-        })
+    // Processa o título
+    const palavras = titulo.toLowerCase()
+        .replace(/[^a-zà-ú\s]/g, '') // Remove caracteres especiais
+        .split(' ')
+        .filter(palavra => palavra.length > 3);
+    
+    // Identifica palavras-chave prioritárias
+    const beneficios = [];
+    palavrasChave.forEach(palavra => {
+        if (titulo.toLowerCase().includes(palavra) {
+            beneficios.push(palavra.charAt(0).toUpperCase() + palavra.slice(1));
+        }
     });
     
-    const data = await response.json();
-    return processarRespostaIA(data.generations[0].text);
+    // Completa com outras palavras relevantes se necessário
+    palavras.forEach(palavra => {
+        if (beneficios.length < 3 && !beneficios.includes(palavra) {
+            beneficios.push(palavra.charAt(0).toUpperCase() + palavra.slice(1));
+        }
+    });
+    
+    // Fallback para benefícios genéricos
+    const padroes = ["Design Premium", "Alta Durabilidade", "Garantia Estendida"];
+    return beneficios.concat(padroes).slice(0, 3);
 }
 
 function processarRespostaIA(textoIA) {
